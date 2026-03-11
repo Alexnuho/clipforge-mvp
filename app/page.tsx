@@ -33,6 +33,39 @@ export default function Home() {
     },
   ];
 
+  const features = [
+    {
+      title: "Top 5 Clip Otomatis",
+      desc: "Sistem memilih maksimal 5 momen paling menarik dan paling potensial untuk short-form content.",
+    },
+    {
+      title: "Viral Score Instan",
+      desc: "Setiap clip diberi skor agar kamu lebih cepat menentukan potongan mana yang paling layak dipakai.",
+    },
+    {
+      title: "Workflow Super Cepat",
+      desc: "Cukup tempel link, tunggu proses, lalu review hasil. Cocok untuk creator yang ingin hemat waktu.",
+    },
+  ];
+
+  const steps = [
+    {
+      step: "01",
+      title: "Paste Link Video",
+      desc: "Masukkan link YouTube yang ingin kamu ubah menjadi short clips.",
+    },
+    {
+      step: "02",
+      title: "AI Menganalisis Konten",
+      desc: "ClipForge mensimulasikan proses transkrip, analisa momen, dan pemilihan segmen terbaik.",
+    },
+    {
+      step: "03",
+      title: "Review dan Publish",
+      desc: "Lihat hasil clip, cek skor viral, lalu publish atau proses ulang dari dashboard.",
+    },
+  ];
+
   const isValidYouTubeLink = (url: string) => {
     return url.includes("youtube.com/watch?v=") || url.includes("youtu.be/");
   };
@@ -76,7 +109,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen text-white">
-      <section className="mx-auto flex max-w-6xl flex-col px-6 py-16 md:px-10 md:py-24">
+      <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-24">
         <div className="mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-300 shadow-lg shadow-blue-500/10">
             <span className="h-2 w-2 rounded-full bg-blue-400" />
@@ -177,6 +210,91 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        <section className="mt-24">
+          <div className="mb-10 text-center">
+            <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-sm text-white/70">
+              Kenapa ClipForge
+            </p>
+            <h2 className="mt-4 text-3xl font-bold md:text-5xl">
+              Workflow Lebih Cepat,
+              <span className="mt-2 block bg-gradient-to-r from-white via-blue-300 to-violet-300 bg-clip-text text-transparent">
+                Output Lebih Konsisten
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20"
+              >
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 text-lg font-bold text-white shadow-lg shadow-blue-500/20">
+                  {index + 1}
+                </div>
+                <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <p className="mt-3 leading-7 text-white/60">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-24">
+          <div className="mb-10 text-center">
+            <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-sm text-white/70">
+              Cara Kerja
+            </p>
+            <h2 className="mt-4 text-3xl font-bold md:text-5xl">
+              3 Langkah Simple
+              <span className="mt-2 block bg-gradient-to-r from-white via-blue-300 to-violet-300 bg-clip-text text-transparent">
+                Dari Video ke Shorts
+              </span>
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {steps.map((item) => (
+              <div
+                key={item.step}
+                className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20"
+              >
+                <p className="text-sm font-semibold text-blue-300">
+                  Step {item.step}
+                </p>
+                <h3 className="mt-3 text-2xl font-semibold">{item.title}</h3>
+                <p className="mt-4 leading-7 text-white/60">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-24">
+          <div className="rounded-[32px] border border-white/10 bg-white/5 p-8 text-center shadow-2xl shadow-black/30 md:p-12">
+            <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-sm text-white/70">
+              Siap Uji Coba
+            </p>
+            <h2 className="mt-5 text-3xl font-bold md:text-5xl">
+              Mulai Bangun Workflow
+              <span className="mt-2 block bg-gradient-to-r from-white via-blue-300 to-violet-300 bg-clip-text text-transparent">
+                Repurpose Konten Kamu
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl leading-8 text-white/60">
+              Tempel link YouTube, jalankan simulasi AI clipping, lalu lihat
+              bagaimana ClipForge bisa jadi fondasi produk creator tools kamu.
+            </p>
+
+            <button
+              onClick={() =>
+                window.scrollTo({ top: 0, behavior: "smooth" })
+              }
+              className="mt-8 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
+            >
+              Coba Sekarang
+            </button>
+          </div>
+        </section>
       </section>
     </main>
   );
