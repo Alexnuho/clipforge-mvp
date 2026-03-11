@@ -49,6 +49,12 @@ export default function RootLayout({
                 >
                   History
                 </Link>
+                <Link
+                  href="/pricing"
+                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                >
+                  Pricing
+                </Link>
               </nav>
             </div>
           </header>
@@ -90,6 +96,9 @@ export default function RootLayout({
                   </Link>
                   <Link href="/history" className="transition hover:text-white">
                     History
+                  </Link>
+                  <Link href="/pricing" className="transition hover:text-white">
+                    Pricing
                   </Link>
                 </div>
               </div>
