@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -110,7 +111,7 @@ export default function Home() {
   return (
     <main className="min-h-screen text-white">
       <section className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-24">
-        <div className="mx-auto max-w-4xl text-center">
+        <div id="hero-input" className="mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-300 shadow-lg shadow-blue-500/10">
             <span className="h-2 w-2 rounded-full bg-blue-400" />
             AI Video Clipper for Viral Shorts
@@ -128,6 +129,21 @@ export default function Home() {
             menarik, memberi skor viral, dan menyiapkan clip siap upload ke
             berbagai sosial media.
           </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/pricing"
+              className="rounded-2xl border border-white/10 bg-white/10 px-5 py-3 font-medium text-white transition hover:bg-white/15"
+            >
+              Lihat Pricing
+            </Link>
+            <Link
+              href="/about"
+              className="rounded-2xl border border-white/10 bg-white/10 px-5 py-3 font-medium text-white transition hover:bg-white/15"
+            >
+              Tentang ClipForge
+            </Link>
+          </div>
 
           <div className="mt-10 rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
             <div className="flex flex-col gap-3 md:flex-row">
@@ -204,9 +220,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <button className="mt-6 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 font-medium text-white transition hover:bg-white/15">
+              <Link
+                href="/results"
+                className="mt-6 block w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-center font-medium text-white transition hover:bg-white/15"
+              >
                 Preview Clip
-              </button>
+              </Link>
             </div>
           ))}
         </div>
@@ -285,14 +304,32 @@ export default function Home() {
               bagaimana ClipForge bisa jadi fondasi produk creator tools kamu.
             </p>
 
-            <button
-              onClick={() =>
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              }
-              className="mt-8 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
-            >
-              Coba Sekarang
-            </button>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("hero-input")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
+              >
+                Coba Sekarang
+              </button>
+
+              <Link
+                href="/pricing"
+                className="rounded-2xl border border-white/10 bg-white/10 px-6 py-4 font-semibold text-white transition hover:bg-white/15"
+              >
+                Lihat Pricing
+              </Link>
+
+              <Link
+                href="/about"
+                className="rounded-2xl border border-white/10 bg-white/10 px-6 py-4 font-semibold text-white transition hover:bg-white/15"
+              >
+                Pelajari Lebih Lanjut
+              </Link>
+            </div>
           </div>
         </section>
       </section>

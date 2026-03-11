@@ -55,6 +55,18 @@ export default function RootLayout({
                 >
                   Pricing
                 </Link>
+                <Link
+                  href="/about"
+                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                >
+                  Contact
+                </Link>
               </nav>
             </div>
           </header>
@@ -99,6 +111,12 @@ export default function RootLayout({
                   </Link>
                   <Link href="/pricing" className="transition hover:text-white">
                     Pricing
+                  </Link>
+                  <Link href="/about" className="transition hover:text-white">
+                    About
+                  </Link>
+                  <Link href="/contact" className="transition hover:text-white">
+                    Contact
                   </Link>
                 </div>
               </div>
