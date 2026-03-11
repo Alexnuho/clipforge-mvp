@@ -55,7 +55,7 @@ export default function ContactPage() {
           ))}
         </section>
 
-        <section className="mt-10 grid gap-6 lg:grid-cols-2">
+        <section className="mt-10 grid gap-6 lg:grid-cols-2)">
           <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20">
             <p className="text-sm text-white/45">Why Contact Us</p>
             <h2 className="mt-3 text-3xl font-semibold">
