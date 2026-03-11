@@ -1,7 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "ClipForge",
   description: "AI Video Clipper for Viral Shorts",
 };
