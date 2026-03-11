@@ -2,52 +2,12 @@
 
 import Link from "next/link";
 import { useParams } from "next/navigation";
-
-const clipData: Record<
-  string,
-  {
-    title: string;
-    score: number;
-    duration: string;
-    reason: string;
-  }
-> = {
-  "1": {
-    title: "Pernyataan pembuka yang paling bikin penasaran",
-    score: 94,
-    duration: "00:31",
-    reason: "Hook kuat di 3 detik awal dan cocok untuk short video.",
-  },
-  "2": {
-    title: "Insight utama yang punya nilai tinggi",
-    score: 90,
-    duration: "00:44",
-    reason: "Bagian ini padat informasi dan berpotensi banyak disimpan.",
-  },
-  "3": {
-    title: "Momen paling relate untuk audiens",
-    score: 87,
-    duration: "00:28",
-    reason: "Kalimatnya mudah dipahami dan terasa dekat dengan penonton.",
-  },
-  "4": {
-    title: "Bagian paling emosional dan engaging",
-    score: 85,
-    duration: "00:37",
-    reason: "Ada unsur emosi yang biasanya bagus untuk retention.",
-  },
-  "5": {
-    title: "Potongan terbaik untuk format viral shorts",
-    score: 82,
-    duration: "00:25",
-    reason: "Durasi singkat, cepat, dan enak dijadikan konten pendek.",
-  },
-};
+import { clips } from "../../data/clips";
 
 export default function ClipDetailPage() {
   const params = useParams();
   const id = params?.id as string;
-  const clip = clipData[id];
+  const clip = clips.find((item) => item.id.toString() === id);
 
   const handleDownload = () => {
     alert(`Download clip "${clip?.title}" dimulai (simulasi).`);
@@ -59,21 +19,30 @@ export default function ClipDetailPage() {
 
   if (!clip) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-black text-white">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Clip tidak ditemukan</h1>
+      <main className="flex min-h-screen items-center justify-center px-6 text-white">
+        <div className="w-full max-w-2xl rounded-[32px] border border-white/10 bg-white/5 p-10 text-center shadow-2xl shadow-black/30">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-3xl">
+            🎬
+          </div>
+          <h1 className="mt-5 text-3xl font-bold">Clip tidak ditemukan</h1>
           <p className="mt-3 text-white/60">
             ID clip yang kamu buka tidak tersedia.
           </p>
+          <Link
+            href="/results"
+            className="mt-6 inline-flex rounded-2xl border border-white/10 bg-white/10 px-5 py-3 font-medium transition hover:bg-white/15"
+          >
+            Kembali ke Hasil
+          </Link>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-black px-6 py-12 text-white">
+    <main className="min-h-screen px-6 py-14 text-white">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8">
+        <div className="mb-10">
           <Link
             href="/results"
             className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition hover:bg-white/10"
@@ -81,62 +50,78 @@ export default function ClipDetailPage() {
             ← Kembali ke Hasil
           </Link>
 
-          <p className="mb-3 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-sm text-white/70">
-            Clip Detail Preview
-          </p>
-          <h1 className="text-4xl font-bold md:text-5xl">{clip.title}</h1>
-          <p className="mt-4 max-w-2xl text-white/70">{clip.reason}</p>
+          <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20">
+            <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-sm text-white/70">
+              Clip Detail Preview
+            </p>
+
+            <h1 className="mt-4 text-4xl font-bold tracking-tight md:text-6xl">
+              {clip.title}
+            </h1>
+
+            <p className="mt-4 max-w-2xl text-white/65">{clip.reason}</p>
+          </div>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-            <div className="flex aspect-[9/16] items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900 to-zinc-800">
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20">
+            <div className="flex aspect-[9/16] items-center justify-center rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(24,24,27,0.95),rgba(15,15,20,0.95))]">
               <div className="text-center">
-                <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-blue-500/20 text-3xl">
+                <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-violet-500 text-4xl text-white shadow-xl shadow-blue-500/20">
                   ▶
                 </div>
-                <p className="text-lg font-semibold">Preview Video Dummy</p>
-                <p className="mt-2 text-sm text-white/50">
+                <p className="text-2xl font-semibold text-white">
+                  Preview Video Dummy
+                </p>
+                <p className="mt-3 text-sm text-white/50">
                   Nanti di sini akan tampil video hasil clip sebenarnya
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+          <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20">
             <div className="space-y-5">
-              <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-                <p className="text-sm text-white/50">Clip ID</p>
-                <p className="mt-1 text-lg font-semibold">#{id}</p>
+              <div className="rounded-[22px] border border-white/10 bg-black/20 p-5">
+                <p className="text-sm text-white/45">Clip ID</p>
+                <p className="mt-2 text-xl font-semibold text-white">#{id}</p>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-                <p className="text-sm text-white/50">Durasi</p>
-                <p className="mt-1 text-lg font-semibold">{clip.duration}</p>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-                <p className="text-sm text-white/50">Viral Score</p>
-                <p className="mt-1 text-3xl font-bold text-green-400">
-                  {clip.score}
+              <div className="rounded-[22px] border border-white/10 bg-black/20 p-5">
+                <p className="text-sm text-white/45">Durasi</p>
+                <p className="mt-2 text-xl font-semibold text-white">
+                  {clip.duration}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-black/30 p-4">
-                <p className="text-sm text-white/50">Alasan AI Memilih Clip</p>
-                <p className="mt-2 leading-7 text-white/80">{clip.reason}</p>
+              <div className="rounded-[22px] border border-white/10 bg-black/20 p-5">
+                <p className="text-sm text-white/45">Viral Score</p>
+                <div className="mt-2 flex items-end justify-between">
+                  <p className="text-4xl font-bold text-emerald-400">
+                    {clip.score}
+                  </p>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/55">
+                    AI Selected
+                  </span>
+                </div>
               </div>
 
-              <div className="flex gap-3 pt-2">
+              <div className="rounded-[22px] border border-white/10 bg-black/20 p-5">
+                <p className="text-sm text-white/45">Alasan AI Memilih Clip</p>
+                <p className="mt-3 leading-7 text-white/80">{clip.reason}</p>
+              </div>
+
+              <div className="grid gap-3 pt-1 md:grid-cols-2">
                 <button
                   onClick={handleDownload}
-                  className="flex-1 rounded-xl border border-white/10 bg-white/10 px-4 py-3 font-medium transition hover:bg-white/20"
+                  className="rounded-2xl border border-white/10 bg-white/10 px-5 py-4 font-medium text-white transition hover:bg-white/15"
                 >
                   Download
                 </button>
+
                 <button
                   onClick={handlePublish}
-                  className="flex-1 rounded-xl bg-blue-500 px-4 py-3 font-medium transition hover:bg-blue-400"
+                  className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-5 py-4 font-medium text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
                 >
                   Publish
                 </button>
