@@ -75,31 +75,28 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <section className="mx-auto flex max-w-6xl flex-col px-6 py-16 md:px-10">
-        <div className="mb-10 flex items-center justify-center">
-          <div className="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm font-semibold text-blue-300">
-            ClipForge
-          </div>
-        </div>
-
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-4 inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1 text-sm text-white/70">
+    <main className="min-h-screen text-white">
+      <section className="mx-auto flex max-w-6xl flex-col px-6 py-16 md:px-10 md:py-24">
+        <div className="mx-auto max-w-4xl text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-300 shadow-lg shadow-blue-500/10">
+            <span className="h-2 w-2 rounded-full bg-blue-400" />
             AI Video Clipper for Viral Shorts
           </div>
 
-          <h1 className="text-4xl font-bold leading-tight md:text-6xl">
-            Ubah 1 Link Video Menjadi
-            <span className="block text-blue-400">5 Clip Paling Viral</span>
+          <h1 className="text-4xl font-bold leading-tight tracking-tight md:text-7xl">
+            Ubah 1 Link Video
+            <span className="mt-2 block bg-gradient-to-r from-white via-blue-300 to-violet-300 bg-clip-text text-transparent">
+              Menjadi 5 Clip Paling Viral
+            </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70 md:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
             Paste link video, lalu ClipForge akan memproses momen paling
             menarik, memberi skor viral, dan menyiapkan clip siap upload ke
             berbagai sosial media.
           </p>
 
-          <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-2xl backdrop-blur">
+          <div className="mt-10 rounded-[28px] border border-white/10 bg-white/5 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl">
             <div className="flex flex-col gap-3 md:flex-row">
               <input
                 type="text"
@@ -110,19 +107,19 @@ export default function Home() {
                   if (error) setError("");
                 }}
                 placeholder="Tempel link video YouTube di sini..."
-                className="h-14 flex-1 rounded-xl border border-white/10 bg-black/40 px-4 text-white placeholder:text-white/40 outline-none disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-14 flex-1 rounded-2xl border border-white/10 bg-black/30 px-5 text-white placeholder:text-white/35 outline-none transition focus:border-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60"
               />
               <button
                 onClick={handleGenerate}
                 disabled={isSubmitting}
-                className="h-14 rounded-xl bg-blue-500 px-6 font-semibold text-white transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-14 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting ? "Processing..." : "Generate Clips"}
               </button>
             </div>
 
             {error && (
-              <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-left">
+              <div className="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-left">
                 <p className="text-sm font-medium text-red-300">
                   Input tidak valid
                 </p>
@@ -130,10 +127,17 @@ export default function Home() {
               </div>
             )}
 
-            <p className="mt-3 text-sm text-white/50">
-              Versi awal untuk uji coba pribadi. Nanti kita lanjutkan ke AI
-              sungguhan.
-            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-white/40">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                YouTube Link Only
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                Top 5 Viral Clips
+              </span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                Personal MVP
+              </span>
+            </div>
           </div>
         </div>
 
@@ -141,25 +145,33 @@ export default function Home() {
           {demoClips.map((clip, index) => (
             <div
               key={index}
-              className="rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg"
+              className="group rounded-[28px] border border-white/10 bg-white/5 p-5 shadow-xl shadow-black/20 transition hover:-translate-y-1 hover:border-white/15"
             >
               <div className="mb-4 flex items-center justify-between">
-                <span className="rounded-full bg-blue-500/20 px-3 py-1 text-sm text-blue-300">
+                <span className="rounded-full bg-blue-500/15 px-3 py-1 text-sm text-blue-300">
                   Clip {index + 1}
                 </span>
-                <span className="text-sm text-white/50">{clip.duration}</span>
+                <span className="text-sm text-white/45">{clip.duration}</span>
               </div>
 
-              <h2 className="text-lg font-semibold">{clip.title}</h2>
+              <h2 className="text-xl font-semibold leading-8 text-white">
+                {clip.title}
+              </h2>
 
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-white/60">Viral Score</span>
-                <span className="text-2xl font-bold text-green-400">
-                  {clip.score}
-                </span>
+              <div className="mt-6 flex items-end justify-between">
+                <div>
+                  <p className="text-sm text-white/45">Viral Score</p>
+                  <p className="mt-1 text-3xl font-bold text-emerald-400">
+                    {clip.score}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-black/20 px-3 py-2 text-sm text-white/55">
+                  Short-ready
+                </div>
               </div>
 
-              <button className="mt-6 w-full rounded-xl border border-white/10 bg-white/10 px-4 py-3 font-medium transition hover:bg-white/20">
+              <button className="mt-6 w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 font-medium text-white transition hover:bg-white/15">
                 Preview Clip
               </button>
             </div>
