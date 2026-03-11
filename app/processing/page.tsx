@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function ProcessingPage() {
+function ProcessingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const video = searchParams.get("video") || "";
@@ -69,5 +69,24 @@ export default function ProcessingPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function ProcessingPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-black px-6 text-white">
+          <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl">
+            <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-white/10 border-t-blue-500" />
+            <h1 className="text-3xl font-bold md:text-4xl">
+              Menyiapkan halaman proses...
+            </h1>
+          </div>
+        </main>
+      }
+    >
+      <ProcessingContent />
+    </Suspense>
   );
 }

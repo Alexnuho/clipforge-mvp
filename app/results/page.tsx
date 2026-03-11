@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { clips } from "../data/clips";
 
-export default function ResultsPage() {
+function ResultsContent() {
   const searchParams = useSearchParams();
   const video = searchParams.get("video") || "";
 
@@ -90,5 +91,24 @@ export default function ResultsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-black px-6 text-white">
+          <div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl">
+            <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-4 border-white/10 border-t-blue-500" />
+            <h1 className="text-3xl font-bold md:text-4xl">
+              Menyiapkan hasil...
+            </h1>
+          </div>
+        </main>
+      }
+    >
+      <ResultsContent />
+    </Suspense>
   );
 }
