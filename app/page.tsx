@@ -125,23 +125,33 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
-            Paste link video, lalu ClipForge akan memproses momen paling
-            menarik, memberi skor viral, dan menyiapkan clip siap upload ke
-            berbagai sosial media.
+            ClipForge membantu creator mengubah video panjang menjadi short-form
+            content yang lebih cepat ditinjau, dipilih, dan disiapkan untuk
+            workflow konten berikutnya.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() =>
+                document
+                  .getElementById("hero-input")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+              className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-5 py-3 font-medium text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
+            >
+              Coba Gratis Sekarang
+            </button>
             <Link
               href="/pricing"
               className="rounded-2xl border border-white/10 bg-white/10 px-5 py-3 font-medium text-white transition hover:bg-white/15"
             >
-              Lihat Pricing
+              Lihat Paket Pricing
             </Link>
             <Link
               href="/about"
               className="rounded-2xl border border-white/10 bg-white/10 px-5 py-3 font-medium text-white transition hover:bg-white/15"
             >
-              Tentang ClipForge
+              Tentang Produk
             </Link>
           </div>
 
@@ -224,7 +234,7 @@ export default function Home() {
                 href="/results"
                 className="mt-6 block w-full rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-center font-medium text-white transition hover:bg-white/15"
               >
-                Preview Clip
+                Lihat Contoh Hasil
               </Link>
             </div>
           ))}
@@ -300,8 +310,8 @@ export default function Home() {
               </span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl leading-8 text-white/60">
-              Tempel link YouTube, jalankan simulasi AI clipping, lalu lihat
-              bagaimana ClipForge bisa jadi fondasi produk creator tools kamu.
+              Tempel link YouTube untuk mencoba flow produk, lihat hasil contoh,
+              atau pelajari paket yang bisa berkembang menjadi creator SaaS.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -313,21 +323,21 @@ export default function Home() {
                 }
                 className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
               >
-                Coba Sekarang
+                Coba Gratis Sekarang
               </button>
 
               <Link
                 href="/pricing"
                 className="rounded-2xl border border-white/10 bg-white/10 px-6 py-4 font-semibold text-white transition hover:bg-white/15"
               >
-                Lihat Pricing
+                Bandingkan Paket
               </Link>
 
               <Link
-                href="/about"
+                href="/contact"
                 className="rounded-2xl border border-white/10 bg-white/10 px-6 py-4 font-semibold text-white transition hover:bg-white/15"
               >
-                Pelajari Lebih Lanjut
+                Hubungi Kami
               </Link>
             </div>
           </div>

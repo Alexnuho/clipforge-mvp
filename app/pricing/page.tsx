@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function PricingPage() {
   const plans = [
     {
@@ -12,6 +14,7 @@ export default function PricingPage() {
       ],
       highlight: false,
       button: "Mulai Gratis",
+      href: "/",
     },
     {
       name: "Pro",
@@ -25,7 +28,8 @@ export default function PricingPage() {
         "Publish workflow lebih cepat",
       ],
       highlight: true,
-      button: "Upgrade ke Pro",
+      button: "Hubungi untuk Pro",
+      href: "/contact",
     },
     {
       name: "Team",
@@ -39,7 +43,8 @@ export default function PricingPage() {
         "Workflow kolaborasi",
       ],
       highlight: false,
-      button: "Hubungi Kami",
+      button: "Diskusi Team Plan",
+      href: "/contact",
     },
   ];
 
@@ -105,15 +110,16 @@ export default function PricingPage() {
                 ))}
               </div>
 
-              <button
-                className={`mt-8 w-full rounded-2xl px-5 py-4 font-medium transition ${
+              <Link
+                href={plan.href}
+                className={`mt-8 block w-full rounded-2xl px-5 py-4 text-center font-medium transition ${
                   plan.highlight
                     ? "bg-gradient-to-r from-blue-500 to-violet-500 text-white shadow-lg shadow-blue-500/20 hover:opacity-95"
                     : "border border-white/10 bg-white/10 text-white hover:bg-white/15"
                 }`}
               >
                 {plan.button}
-              </button>
+              </Link>
             </div>
           ))}
         </div>

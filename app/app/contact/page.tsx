@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ContactPage() {
   const contactItems = [
     {
@@ -96,6 +98,21 @@ export default function ContactPage() {
             produk yang membantu creator dan tim konten bekerja lebih cepat,
             lebih rapi, dan lebih scalable.
           </p>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/pricing"
+              className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
+            >
+              Lihat Pricing
+            </Link>
+            <Link
+              href="/"
+              className="rounded-2xl border border-white/10 bg-white/10 px-6 py-4 font-semibold text-white transition hover:bg-white/15"
+            >
+              Kembali ke Home
+            </Link>
+          </div>
         </section>
       </div>
     </main>
