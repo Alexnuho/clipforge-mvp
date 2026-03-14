@@ -1,144 +1,219 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { auth } from "../auth";
+import { prisma } from "../lib/prisma";
 
-type HistoryItem = {
-  id: string;
-  video: string;
-  createdAt: string;
-};
+function getStatusStyle(status: string) {
+  switch (status) {
+    case "completed":
+      return "border-emerald-500/20 bg-emerald-500/10 text-emerald-300";
+    case "processing":
+      return "border-amber-500/20 bg-amber-500/10 text-amber-300";
+    case "failed":
+      return "border-red-500/20 bg-red-500/10 text-red-300";
+    default:
+      return "border-white/10 bg-white/5 text-white/45";
+  }
+}
 
-export default function HistoryPage() {
-  const router = useRouter();
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+function getSourceTypeStyle(sourceType: string) {
+  switch (sourceType) {
+    case "upload":
+      return "border-blue-500/20 bg-blue-500/10 text-blue-300";
+    case "youtube":
+      return "border-violet-500/20 bg-violet-500/10 text-violet-300";
+    default:
+      return "border-white/10 bg-white/5 text-white/45";
+  }
+}
 
-  useEffect(() => {
-    const savedHistory = localStorage.getItem("clipforge-history");
-    if (savedHistory) {
-      setHistory(JSON.parse(savedHistory));
-    }
-  }, []);
+export default async function HistoryPage() {
+  const session = await auth();
 
-  const handleDeleteItem = (id: string) => {
-    const updatedHistory = history.filter((item) => item.id !== id);
-    setHistory(updatedHistory);
-    localStorage.setItem("clipforge-history", JSON.stringify(updatedHistory));
-  };
+  if (!session?.user?.email) {
+    return (
+      <main className="mx-auto flex min-h-[70vh] w-full max-w-6xl flex-col px-6 py-16">
+        <div className="rounded-[32px] border border-white/10 bg-white/[0.03] p-10 backdrop-blur-xl">
+          <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/50">
+            History ClipForge
+          </span>
 
-  const handleClearAll = () => {
-    const confirmed = window.confirm(
-      "Apakah kamu yakin ingin menghapus semua riwayat?"
+          <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white md:text-6xl">
+            Login Dulu
+            <br />
+            Untuk Melihat Riwayat
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/60">
+            Riwayat project hanya tersedia untuk user yang sudah login. Masuk ke
+            akun Google kamu lalu kembali ke halaman ini.
+          </p>
+
+          <div className="mt-10">
+            <Link
+              href="/api/auth/signin"
+              className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 text-base font-semibold text-white shadow-[0_0_40px_rgba(59,130,246,0.28)] transition hover:opacity-95"
+            >
+              Login Sekarang
+            </Link>
+          </div>
+        </div>
+      </main>
     );
+  }
 
-    if (!confirmed) return;
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session.user.email,
+    },
+    include: {
+      projects: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
 
-    setHistory([]);
-    localStorage.removeItem("clipforge-history");
-  };
+  const projects = user?.projects ?? [];
 
-  const handleReprocess = (video: string) => {
-    router.push(`/processing?video=${encodeURIComponent(video)}`);
-  };
+  const completedCount = projects.filter((p) => p.status === "completed").length;
+  const processingCount = projects.filter((p) => p.status === "processing").length;
+  const failedCount = projects.filter((p) => p.status === "failed").length;
 
   return (
-    <main className="min-h-screen px-6 py-14 text-white">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-10">
-          <Link
-            href="/"
-            className="mb-5 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 transition hover:bg-white/10"
-          >
-            ← Kembali ke Home
-          </Link>
+    <main className="mx-auto flex w-full max-w-6xl flex-col px-6 py-16">
+      <Link
+        href="/"
+        className="mb-8 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white/70 transition hover:bg-white/10"
+      >
+        ← Kembali ke Home
+      </Link>
 
-          <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/20">
-            <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-sm text-white/70">
-                History ClipForge
-              </p>
+      <section className="rounded-[32px] border border-white/10 bg-white/[0.03] p-8 shadow-[0_10px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl md:p-10">
+        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+          <div>
+            <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/50">
+              History ClipForge
+            </span>
 
-              {history.length > 0 && (
-                <button
-                  onClick={handleClearAll}
-                  className="rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-300 transition hover:bg-red-500/20"
-                >
-                  Hapus Semua Riwayat
-                </button>
-              )}
-            </div>
-
-            <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
+            <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white md:text-7xl">
               Riwayat
-              <span className="mt-2 block bg-gradient-to-r from-white via-blue-300 to-violet-300 bg-clip-text text-transparent">
-                Project Kamu
-              </span>
+              <br />
+              Project Kamu
             </h1>
 
-            <p className="mt-4 max-w-2xl text-white/65">
-              Semua link video yang pernah kamu proses akan muncul di sini dan
-              bisa langsung dibuka kembali atau diproses ulang.
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-white/60">
+              Semua link video dan upload yang pernah kamu proses akan muncul di
+              sini dan bisa langsung dibuka kembali untuk melihat detail hasil
+              project.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
+                Completed: {completedCount}
+              </span>
+              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-4 py-2 text-sm text-amber-300">
+                Processing: {processingCount}
+              </span>
+              <span className="rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm text-red-300">
+                Failed: {failedCount}
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white/60">
+            <p className="font-medium text-white">
+              {session.user.name || "User ClipForge"}
+            </p>
+            <p className="mt-1 text-white/45">{session.user.email}</p>
+            <p className="mt-3 text-xs text-white/35">
+              Total project: {projects.length}
             </p>
           </div>
         </div>
+      </section>
 
-        {history.length === 0 ? (
-          <div className="rounded-[28px] border border-white/10 bg-white/5 p-10 text-center shadow-xl shadow-black/20">
-            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white/5 text-3xl">
-              📂
-            </div>
-            <p className="mt-5 text-2xl font-semibold">Belum ada riwayat</p>
-            <p className="mt-2 text-white/55">
-              Coba generate video dari halaman utama terlebih dahulu.
+      <section className="mt-10">
+        {projects.length === 0 ? (
+          <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-10 text-center backdrop-blur-xl">
+            <h2 className="text-3xl font-semibold text-white">
+              Belum Ada Project
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-white/55">
+              Kamu belum menyimpan project apa pun. Kembali ke homepage, tempel
+              link YouTube atau upload video, lalu klik Generate Clips untuk
+              membuat project pertama.
             </p>
+
+            <div className="mt-8">
+              <Link
+                href="/"
+                className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-6 py-4 text-base font-semibold text-white shadow-[0_0_40px_rgba(59,130,246,0.28)] transition hover:opacity-95"
+              >
+                Buat Project Pertama
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="space-y-5">
-            {history.map((item) => (
-              <div
-                key={item.id}
-                className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-xl shadow-black/20 transition hover:border-white/15"
+          <div className="grid gap-6">
+            {projects.map((project) => (
+              <Link
+                key={project.id}
+                href={`/clips/${project.id}`}
+                className="group block rounded-[28px] border border-white/10 bg-white/[0.03] p-6 shadow-[0_8px_40px_rgba(0,0,0,0.25)] backdrop-blur transition hover:-translate-y-1 hover:border-white/15 hover:bg-white/[0.05]"
               >
-                <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-                  <div className="flex-1">
-                    <p className="text-sm text-white/45">Source Video</p>
-                    <p className="mt-2 break-all text-base leading-7 text-white/90">
-                      {item.video}
+                <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-white/35">Source Video</p>
+
+                    <h3 className="mt-3 text-2xl font-semibold text-white">
+                      {project.title || "Project ClipForge"}
+                    </h3>
+
+                    <p className="mt-4 break-all text-base text-white/70">
+                      {project.sourceType === "upload"
+                        ? project.storagePath || project.fileName || "Uploaded Video"
+                        : project.sourceUrl || "-"}
                     </p>
-                    <div className="mt-4 inline-flex rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs text-white/50">
-                      Diproses pada: {item.createdAt}
+
+                    <div className="mt-5 flex flex-wrap items-center gap-3">
+                      <span
+                        className={`rounded-full border px-4 py-2 text-sm ${getStatusStyle(
+                          project.status
+                        )}`}
+                      >
+                        Status: {project.status}
+                      </span>
+
+                      <span
+                        className={`rounded-full border px-4 py-2 text-sm ${getSourceTypeStyle(
+                          project.sourceType
+                        )}`}
+                      >
+                        Source: {project.sourceType}
+                      </span>
+
+                      <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/45">
+                        Dibuat: {new Date(project.createdAt).toLocaleString("id-ID")}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="grid gap-3 md:grid-cols-3 lg:w-auto">
-                    <Link
-                      href={`/results?video=${encodeURIComponent(item.video)}`}
-                      className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-5 py-3 text-center font-medium text-white shadow-lg shadow-blue-500/20 transition hover:opacity-95"
-                    >
+                  <div className="flex flex-wrap gap-3">
+                    <span className="rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(99,102,241,0.3)] transition group-hover:opacity-95">
                       Lihat Hasil
-                    </Link>
+                    </span>
 
-                    <button
-                      onClick={() => handleReprocess(item.video)}
-                      className="rounded-2xl border border-blue-500/30 bg-blue-500/10 px-5 py-3 font-medium text-blue-300 transition hover:bg-blue-500/20"
-                    >
+                    <span className="rounded-2xl border border-blue-500/30 bg-blue-500/10 px-5 py-3 text-sm font-medium text-blue-200">
                       Proses Ulang
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteItem(item.id)}
-                      className="rounded-2xl border border-red-500/30 bg-red-500/10 px-5 py-3 font-medium text-red-300 transition hover:bg-red-500/20"
-                    >
-                      Hapus
-                    </button>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
-      </div>
+      </section>
     </main>
   );
 }
