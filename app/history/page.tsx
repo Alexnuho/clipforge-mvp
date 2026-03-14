@@ -2,6 +2,20 @@ import Link from "next/link";
 import { auth } from "../auth";
 import { prisma } from "../lib/prisma";
 
+type ProjectItem = {
+  id: string;
+  title: string | null;
+  sourceUrl: string | null;
+  sourceType: string;
+  fileName: string | null;
+  fileSize: number | null;
+  mimeType: string | null;
+  storagePath: string | null;
+  storageUrl: string | null;
+  status: string;
+  createdAt: Date;
+};
+
 function getStatusStyle(status: string) {
   switch (status) {
     case "completed":
@@ -74,11 +88,17 @@ export default async function HistoryPage() {
     },
   });
 
-  const projects = user?.projects ?? [];
+  const projects: ProjectItem[] = (user?.projects ?? []) as ProjectItem[];
 
-  const completedCount = projects.filter((p) => p.status === "completed").length;
-  const processingCount = projects.filter((p) => p.status === "processing").length;
-  const failedCount = projects.filter((p) => p.status === "failed").length;
+  const completedCount = projects.filter(
+    (p: ProjectItem) => p.status === "completed"
+  ).length;
+  const processingCount = projects.filter(
+    (p: ProjectItem) => p.status === "processing"
+  ).length;
+  const failedCount = projects.filter(
+    (p: ProjectItem) => p.status === "failed"
+  ).length;
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col px-6 py-16">
@@ -156,7 +176,7 @@ export default async function HistoryPage() {
           </div>
         ) : (
           <div className="grid gap-6">
-            {projects.map((project) => (
+            {projects.map((project: ProjectItem) => (
               <Link
                 key={project.id}
                 href={`/clips/${project.id}`}
@@ -172,7 +192,9 @@ export default async function HistoryPage() {
 
                     <p className="mt-4 break-all text-base text-white/70">
                       {project.sourceType === "upload"
-                        ? project.storagePath || project.fileName || "Uploaded Video"
+                        ? project.storagePath ||
+                          project.fileName ||
+                          "Uploaded Video"
                         : project.sourceUrl || "-"}
                     </p>
 
@@ -194,7 +216,8 @@ export default async function HistoryPage() {
                       </span>
 
                       <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/45">
-                        Dibuat: {new Date(project.createdAt).toLocaleString("id-ID")}
+                        Dibuat:{" "}
+                        {new Date(project.createdAt).toLocaleString("id-ID")}
                       </span>
                     </div>
                   </div>
